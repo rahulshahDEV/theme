@@ -2,12 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:providertest/homescreen.dart';
 import 'package:providertest/movieprovider.dart';
+import 'package:providertest/themeprovider.dart';
+import 'package:providertest/themes.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => MovieProvider(),
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => MovieProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
+        )
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +29,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Provider Test',
-      theme: ThemeData(useMaterial3: true),
+      themeMode: ThemeMode.system,
+      theme: Provider.of<ThemeProvider>(context).themeData,
       home: const HomeScreen(),
     );
   }
